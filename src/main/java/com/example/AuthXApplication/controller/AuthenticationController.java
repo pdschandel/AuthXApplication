@@ -1,16 +1,15 @@
 package com.example.AuthXApplication.controller;
 
+import com.example.AuthXApplication.dto.request.LoginRequest;
 import com.example.AuthXApplication.dto.request.RegisterRequest;
+import com.example.AuthXApplication.dto.response.LoginResponse;
 import com.example.AuthXApplication.dto.response.RegisterResponse;
 import com.example.AuthXApplication.service.interfaces.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,5 +28,11 @@ public class AuthenticationController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+        LoginResponse response = authenticationService.login(request);
+        return ResponseEntity.ok(response);
     }
 }

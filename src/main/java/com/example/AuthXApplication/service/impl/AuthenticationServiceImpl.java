@@ -1,9 +1,12 @@
 package com.example.AuthXApplication.service.impl;
 
 import com.example.AuthXApplication.Model.User;
+import com.example.AuthXApplication.dto.request.LoginRequest;
 import com.example.AuthXApplication.dto.request.RegisterRequest;
+import com.example.AuthXApplication.dto.response.LoginResponse;
 import com.example.AuthXApplication.dto.response.RegisterResponse;
 import com.example.AuthXApplication.exception.EmailAlreadyExistsException;
+import com.example.AuthXApplication.exception.InvalidCredentialsException;
 import com.example.AuthXApplication.mapper.UserMapper;
 import com.example.AuthXApplication.repository.UserRepository;
 import com.example.AuthXApplication.service.interfaces.AuthenticationService;
@@ -12,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +34,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user =userMapper.toEntity(registerRequest,encodedPassword);
         User savedUser = userRepository.save(user);
         return userMapper.toResponse(savedUser);
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(InvalidCredentialsException::new);
+
+        if (!passwordEncoder.matches(
+                loginRequest.getPassword(),
+                user.getPassword())) {
+
+            throw new InvalidCredentialsException();
+        }
+
+        return LoginResponse.builder()
+                .accessToken("TEMP_JWT_TOKEN")
+                .build();
     }
 }
