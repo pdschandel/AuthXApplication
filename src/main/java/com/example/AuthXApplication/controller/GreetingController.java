@@ -11,4 +11,8 @@ public class GreetingController {
     public String greetings(){
         return "greetings";
     }
+    @GetMapping("/test")
+    public String test() {
+        throw new RuntimeException("Boom");
+    }
 }

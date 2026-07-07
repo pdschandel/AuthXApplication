@@ -21,12 +21,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
 
+//            System.out.println();
+            throws Exception {
+//        System.out.println("Every request should pass through me !!!!!!1");
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**")
+                        .requestMatchers("/api/v1/auth/**","/error")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
