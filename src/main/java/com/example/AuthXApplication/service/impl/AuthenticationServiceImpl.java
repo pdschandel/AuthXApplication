@@ -10,13 +10,10 @@ import com.example.AuthXApplication.exception.InvalidCredentialsException;
 import com.example.AuthXApplication.mapper.UserMapper;
 import com.example.AuthXApplication.repository.UserRepository;
 import com.example.AuthXApplication.service.interfaces.AuthenticationService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final JwtServiceImpl jwtService;
 
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) {
@@ -50,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         return LoginResponse.builder()
-                .accessToken("TEMP_JWT_TOKEN")
+                .accessToken(jwtService.generateAccessToken(user))
                 .build();
     }
 }
