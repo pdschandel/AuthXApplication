@@ -2,7 +2,6 @@ package com.example.AuthXApplication.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -33,7 +32,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .message(credentialsException.getMessage())
                 .build();
-        return new ResponseEntity<>(apiErrorResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiErrorResponse,HttpStatus.UNAUTHORIZED);
     }
 
 }
