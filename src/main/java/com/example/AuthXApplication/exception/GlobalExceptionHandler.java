@@ -27,9 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException credentialsException){
         ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
                 .timestamp(Instant.now())
-                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
                 .path("")
-                .status(HttpStatus.BAD_REQUEST.value())
+                .status(HttpStatus.UNAUTHORIZED.value())
                 .message(credentialsException.getMessage())
                 .build();
         return new ResponseEntity<>(apiErrorResponse,HttpStatus.UNAUTHORIZED);
